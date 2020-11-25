@@ -31,7 +31,7 @@ function upload() {
       fileName: file.name,
     });
   }
-  sasJs.uploadFile(filePath, filesToUpload).then(
+  sasJs.uploadFile("file/upload", filesToUpload, { path: filePath }).then(
     (res) => {
       if (typeof res.sasjsAbort === "undefined") {
         console.log("FAILED");
