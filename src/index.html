@@ -12,6 +12,7 @@
         sasJs = new SASjs.default({
           appLoc: "/Public/app",
           serverType: "SASVIYA",
+          serverUrl: "https://sas.analytium.co.uk/",
           debug: false,
         });
       }
@@ -24,10 +25,16 @@
     <h1>
       Welcome to the Vanilla JS Seed App for <span class="code">SASjs</span>!
     </h1>
-    <div class="login-form" id="login-form">
+    <div class="form" id="login-form">
       <input type="text" id="username" placeholder="Enter username" />
       <input type="password" id="password" placeholder="Enter password" />
     </div>
     <button id="login" onclick="login()">Log in</button>
+
+    <div class="form" id="upload-form" style="display: none">
+      <label for="myfile">Select a file:</label>
+      <input type="file" id="myfile" name="myfile" />
+    </div>
+    <button id="upload" onclick="upload()" style="display: none">Upload</button>
   </body>
 </html>
