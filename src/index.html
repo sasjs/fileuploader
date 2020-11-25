@@ -7,6 +7,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="switch.css" />
     <script>
       function initSasJs() {
         sasJs = new SASjs.default({
@@ -21,6 +22,15 @@
     <script src="scripts.js"></script>
   </head>
   <body onload="initSasJs()">
+    <div class="debug">
+      <span>Debug</span>
+
+      <label class="switch">
+        <input id="debug" type="checkbox" onchange="setDebugState()" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
     <h1>Hello!</h1>
     <h1>
       Welcome to the Vanilla JS Seed App for <span class="code">SASjs</span>!

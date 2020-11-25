@@ -81,3 +81,8 @@ function fileChange() {
   }
   document.getElementById("filestatus").innerHTML = txt;
 }
+
+function setDebugState() {
+  const state = document.getElementById("debug").checked;
+  sasJs.setDebugState(state);
+}

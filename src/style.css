@@ -95,3 +95,14 @@ td {
 td:first-child {
   border-left: 1px solid #cecfd5;
 }
+
+.debug {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 20px;
+}
+.debug span {
+  font-size: 20px;
+  vertical-align: -webkit-baseline-middle;
+}
