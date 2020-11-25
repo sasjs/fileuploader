@@ -32,8 +32,14 @@
     <button id="login" onclick="login()">Log in</button>
 
     <div class="form" id="upload-form" style="display: none">
-      <label for="myfile">Select a file:</label>
-      <input type="file" id="myfile" name="myfile" onchange="fileChange()" />
+      <input type="text" id="filePath" placeholder="Where to upload" />
+      <input
+        type="file"
+        id="myfile"
+        name="myfile"
+        multiple
+        onchange="fileChange()"
+      />
       <p id="filestatus"></p>
     </div>
     <button

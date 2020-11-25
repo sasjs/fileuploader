@@ -22,20 +22,32 @@ function login() {
 
 function upload() {
   const x = document.getElementById("myfile");
-  const file = x.files[0];
-  sasJs.request("file/upload", file).then((response) => {
-    let responseJson;
-    try {
-      responseJson = response;
-    } catch (e) {
-      console.error(e);
+  const filePath = document.getElementById("filePath").value;
+
+  const filesToUpload = [];
+  for (const file of x.files) {
+    filesToUpload.push({
+      file: file,
+      fileName: file.name,
+    });
+  }
+  sasJs.uploadFile(filePath, filesToUpload).then(
+    (res) => {
+      if (typeof res.sasjsAbort === "undefined") {
+        console.log("FAILED");
+        console.log(res);
+      } else {
+        // handle succesfull response
+        console.log("SUCCESS");
+        console.log(res);
+      }
+    },
+    (err) => {
+      alert("check console");
+      console.log("FAILED");
+      console.log(err);
     }
-    console.log(responseJson);
-    if (responseJson && responseJson.status === 449) {
-      console.log("calling upload again");
-      upload();
-    }
-  });
+  );
 }
 
 function fileChange() {
