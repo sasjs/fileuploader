@@ -6,14 +6,11 @@
     {
       "name": "viya",
       "serverType": "SASVIYA",
-      "serverUrl": "https://sas.analytium.co.uk",
-      "appLoc": "/Projects/saad",
-      "tgtServices": ["./services/file"],
-      "jobs": ["./services/file"],
+      "serverUrl": "",
+      "appLoc": "/Public/fileuploader",
       "deployServicePack": true,
-      "tgtDeployScripts": [],
       "assetPaths": [],
-      "streamWeb": false,
+      "streamWeb": true,
       "streamWebFolder": "webv",
       "webSourcePath": "src"
     }

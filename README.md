@@ -1,43 +1,27 @@
-# Vanilla JavaScript Seed App for SASjs
+# Demo SASjs File Uploader app
 
-This is the minimal seed app for [SASjs](https://github.com/sasjs/adapter).
+This is a very simple demo app to show how to build a file upload process.  The app has a logon screen, then an input box (so the user can provide a target directory path), and a file picker.
 
-It runs on both SAS 9 and Viya. To deploy the services, execute the following:
+The file is sent to SAS where the path is verified, the file is written, and a directory listing is returned.
+
+To deploy this app, first install the SASjs cli:  `npm i @sasjs/cli`.  Full instructions [here](https://cli.sasjs.io/installation/).
+
+
+Next, run `sasjs add` to prepare your target ([instructions](https://cli.sasjs.io/add/)).
+
+Finally:
 
 ```
-/* define the app location, eg in metadata or Viya folders service */
-%let apploc=/Public/myapp;
-
-/* include macros directly, else download & compile manually */
-filename mc url "https://raw.githubusercontent.com/sasjs/core/main/all.sas";
-%inc mc;
-
-/* create the two services */
-filename ft15f001 temp;
-parmcards4;
-    proc sql;
-    create table areas as select distinct area from sashelp.springs;
-    %webout(OPEN)
-    %webout(OBJ,areas)
-    %webout(CLOSE)
-;;;;
-%mp_createwebservice(path=&apploc/common, name=appinit)
-
-parmcards4;
-    %webout(FETCH)
-    proc sql;
-    create table springs as select * from sashelp.springs
-      where area in (select area from areas);
-    %webout(OPEN)
-    %webout(OBJ,springs)
-    %webout(CLOSE)
-;;;;
-%mp_createwebservice(path=&apploc/common, name=getdata)
+npm install
+sasjs cbd YOURTARGET
 ```
 
-Next, clone this repo, open the `index.html` file and update the `appLoc` in the `initSasJs()` function to the same folder location used above. Deploy to the SAS Web Server as follows:
+The streaming version is available in `$(appLoc)/clickme`.
 
-There is a deploy NPM script provided in the `package.json`.
+Alternatively, deploy the frontend (`src` folder) to your SAS Web server (`/var/www/htdocs` folder) and deploy the backend services by running `sasjs cb` and executing the `/sasjsbuild/build.sas` program in SASStudioV.  Be sure the appLoc is the same for both frontend (`index.html`) and backend (`sasjsconfig.json`)!
+
+
+There is also a deploy NPM script provided in the `package.json`.
 
 It deploys the app to a specified server via SSH using the rsync command.
 
@@ -51,9 +35,3 @@ You can run the script like so:
 ```
 SSH_ACCOUNT=me@my-sas-server.com DEPLOY_PATH=/var/www/html/my-folder/sasjs-tests npm run deploy
 ```
-
-You are done!
-
-## Local Development
-
-You can put the frontend [directly on the SAS Web Server](https://sasjs.io/frontend/deployment/), else you can also use node to spin up a local web server with CORS disabled. To install, submit `npm install http-server -g`. To execute, navigate to the location where the app is to be loaded and submit: `npx http-server --cors`
