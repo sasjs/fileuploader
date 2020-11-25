@@ -1,0 +1,41 @@
+{
+  "cmnMacros": [
+    "macros"
+  ],
+  "cmnServices": [
+    "services/common"
+  ],
+  "useMacroCore": true,
+  "targets": [
+    {
+      "name": "viya",
+      "serverType": "SASVIYA",
+      "serverUrl": "YOURSASVIYASERVER",
+      "appLoc": "/Public/app/minimal-seed-app",
+      "buildOutputFileName": "myviyadeploy.sas",
+      "deployServicePack": true,
+      "tgtDeployScripts": [
+        "sasjsbuild/myviyadeploy.sas"
+      ],
+      "assetPaths": [],
+      "streamWeb": false,
+      "streamWebFolder": "webv",
+      "webSourcePath": "src"
+    },
+    {
+      "name": "sas9",
+      "serverType": "SAS9",
+      "serverUrl": "YOURSAS9SERVER",
+      "appLoc":  "/Public/app/minimal-seed-app",
+      "buildOutputFileName": "mysas9deploy.sas",
+      "tgtDeployVars": {
+        "serverName": "SASApp",
+        "repositoryName": "Foundation"
+      },
+      "assetPaths": [],
+      "streamWeb": false,
+      "streamWebFolder": "web9",
+      "webSourcePath": "src"
+    }
+  ]
+}
