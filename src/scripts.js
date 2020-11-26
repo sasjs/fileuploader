@@ -33,17 +33,16 @@ function upload() {
   }
   sasJs.uploadFile("file/upload", filesToUpload, { path: filePath }).then(
     (res) => {
-      if (typeof res.sasjsAbort === "undefined") {
-        console.log("FAILED");
-        console.log(res);
+      if (typeof res.dirlist === "object") {
+        populateTable(res.dirlist);
       } else {
-        // handle succesfull response
-        console.log("SUCCESS");
+        alert("Error Occurred");
+        console.log("FAILED");
         console.log(res);
       }
     },
     (err) => {
-      alert("check console");
+      alert("Error Occurred");
       console.log("FAILED");
       console.log(err);
     }
@@ -85,4 +84,23 @@ function fileChange() {
 function setDebugState() {
   const state = document.getElementById("debug").checked;
   sasJs.setDebugState(state);
+}
+
+function populateTable(list) {
+  const table = document.getElementById("dirlist");
+  const tbody = table.children[0];
+
+  const tableHeader = tbody.children[0];
+
+  tbody.textContent = "";
+  tbody.appendChild(tableHeader);
+
+  list.forEach((l) => {
+    const tr = document.createElement("TR");
+    const td = document.createElement("TD");
+    td.appendChild(document.createTextNode(l.FILEPATH));
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  });
+  table.style.display = "block";
 }

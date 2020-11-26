@@ -66,36 +66,6 @@ select {
   width: 30%;
 }
 
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  color: #4a4a4d;
-  font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-th,
-td {
-  padding: 10px 15px;
-  vertical-align: middle;
-  font-weight: normal;
-}
-thead {
-  background: #3f51b5;
-  color: #fff;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-tbody tr:nth-child(even) {
-  background: #f0f0f2;
-}
-td {
-  border-bottom: 1px solid #cecfd5;
-  border-right: 1px solid #cecfd5;
-}
-td:first-child {
-  border-left: 1px solid #cecfd5;
-}
-
 .debug {
   position: absolute;
   top: 0;
