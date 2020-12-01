@@ -4,7 +4,7 @@ This is a very simple demo app to show how to build a file upload process.  The 
 
 The file is sent to SAS where the path is verified, the file is written, and a directory listing is returned.
 
-To deploy this app, first install the SASjs cli:  `npm i @sasjs/cli`.  Full instructions [here](https://cli.sasjs.io/installation/).
+To deploy this app, first install the SASjs cli:  `npm i -g @sasjs/cli`.  Full instructions [here](https://cli.sasjs.io/installation/).
 
 
 Next, run `sasjs add` to prepare your target ([instructions](https://cli.sasjs.io/add/)).
