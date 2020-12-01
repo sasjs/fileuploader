@@ -4,7 +4,8 @@
   "description": "A plain javascript app to demonstrate the process of uploading a file (with a parameter) and dealing with the response from SAS",
   "main": "index.js",
   "scripts": {
-    "deploy": "rsync -avhe ssh ./src/* --delete $SSH_ACCOUNT:$DEPLOY_PATH"
+    "deploy": "rsync -avhe ssh ./src/* --delete $SSH_ACCOUNT:$DEPLOY_PATH",
+    "deploywin": "scp -i ~/.ssh/private_key -r ./src/* $SSH_ACCOUNT:$DEPLOY_PATH"
   },
   "keywords": [
     "SAS",
