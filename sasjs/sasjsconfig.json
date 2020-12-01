@@ -7,8 +7,11 @@
       "name": "viya",
       "serverType": "SASVIYA",
       "serverUrl": "",
-      "appLoc": "/Public/fileuploader",
+      "appLoc": "/Public/app/fileuploader",
       "deployServicePack": true,
+      "tgtDeployScripts":[
+        "sasjs/build/copyscript.sh"
+      ],
       "assetPaths": [],
       "streamWeb": true,
       "streamWebFolder": "webv",

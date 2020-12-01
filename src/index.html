@@ -12,14 +12,17 @@
     <script>
       function initSasJs() {
         sasJs = new SASjs.default({
-          appLoc: "/Projects/saad",
+          appLoc: "/Public/app/fileuploader",
           serverType: "SASVIYA",
           serverUrl: "https://sas.analytium.co.uk/",
           debug: false,
         });
       }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@sasjs/adapter@1/index.js"></script>
+    <!-- uncomment to enable regular (non streamed) web app
+      <script src="https://cdn.jsdelivr.net/npm/@sasjs/adapter@1/index.js"></script>
+    -->
+    <script src="../node_modules/@sasjs/adapter/index.js"></script>
     <script src="scripts.js"></script>
   </head>
   <body onload="initSasJs()">
@@ -32,10 +35,10 @@
       </label>
     </div>
 
-    <h1>Hello!</h1>
     <h1>
-      Welcome to the Vanilla JS Seed App for <span class="code">SASjs</span>!
+      This is a template <span class="code">SASjs</span> app
     </h1>
+    <p> You can use it to upload a local file to a directory on your Viya server</p>
     <div class="form" id="login-form">
       <input type="text" id="username" placeholder="Enter username" />
       <input type="password" id="password" placeholder="Enter password" />

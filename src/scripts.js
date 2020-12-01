@@ -31,7 +31,7 @@ function upload() {
       fileName: file.name,
     });
   }
-  sasJs.uploadFile("file/upload", filesToUpload, { path: filePath }).then(
+  sasJs.uploadFile("common/upload", filesToUpload, { path: filePath }).then(
     (res) => {
       if (typeof res.dirlist === "object") {
         populateTable(res.dirlist);
