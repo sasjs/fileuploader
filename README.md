@@ -16,6 +16,11 @@ filename sasjs url "https://raw.githubusercontent.com/sasjs/fileuploader/master/
 
 You can now open it at `YOURSERVER/SASJobExecution?_program=/Public/app/fileuploader/clickme`.
 
+## Alternatives
+It is also possible to upload files using SAS Studio, into your home directory (you can set symlinks to other locations).
+
+If your use case is simply about loading data into SAS, you might want to consider https://datacontroller.io (lets you load excel and CSV files into any SAS table or database with full audit trail - it's also free for up to 5 users).
+
 ## Building from Source
 
 To deploy this app, first install the SASjs CLI - full instructions [here](https://cli.sasjs.io/installation/).
