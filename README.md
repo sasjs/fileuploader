@@ -4,26 +4,42 @@ This is a very simple demo app to show how to build a file upload process.  The 
 
 The file is sent to SAS where the path is verified, the file is written, and a directory listing is returned.
 
-To deploy this app, first install the SASjs cli:  `npm i -g @sasjs/cli`.  Full instructions [here](https://cli.sasjs.io/installation/).
+## Fast Deploy
+This app can be deployed as a streaming SAS app in two lines of code:
 
+```
+filename sasjs url "https://raw.githubusercontent.com/sasjs/fileuploader/master/runme.sas";
+%inc sasjs;
+```
+
+You can now open it at `YOURSERVER/SASJobExecution?_program=/Public/app/fileuploader/clickme`.
+
+## Building from Source
+
+To deploy this app, first install the SASjs CLI - full instructions [here](https://cli.sasjs.io/installation/).
 
 Next, run `sasjs add` to prepare your target ([instructions](https://cli.sasjs.io/add/)).
 
-Finally:
+Then run the below to deploy the backend (SAS) services:
 
 ```
 npm install
-sasjs cbd YOURTARGET
+sasjs cbd -t YOURTARGET
 ```
 
-The streaming version is available in `$(appLoc)/clickme`.
+If you don't have the ability to `sasjs add` due to not having access to a client / secret, you can instead run `sasjs cb` and execute the resulting `sasjsbuild/build.sas` script in SAS Studio V to create the backend services.
 
-Alternatively, deploy the frontend (`src` folder) to your SAS Web server (`/var/www/htdocs` folder) and deploy the backend services by running `sasjs cb` and executing the `/sasjsbuild/build.sas` program in SASStudioV.  Be sure the appLoc is the same for both frontend (`index.html`) and backend (`sasjsconfig.json`)!
+## Frontend
 
+### Configuration
 
-There is also a deploy NPM script provided in the `package.json`.
+Open `index.html` and make sure the value for `appLoc` is the same as that used when deploying the backend (`sasjsconfig.json`).
 
-It deploys the app to a specified server via SSH using the rsync command.
+Also, update the `<script>` tag so that SASjs is pointing to a CDN (or copy the file from `node_modules` into the `src` folder and use a relative reference).
+
+### Deployment
+
+The frontend (`src` folder) is deployed to your SAS Web server (`/var/www/htdocs` folder) - you can upload manually, or using the supplied NPM script in `package.json`.
 
 To be able to run the deploy script, two environment variables need to be set:
 
@@ -35,3 +51,9 @@ You can run the script like so:
 ```
 SSH_ACCOUNT=me@my-sas-server.com DEPLOY_PATH=/var/www/html/my-folder/sasjs-tests npm run deploy
 ```
+
+## Closing remarks
+
+If you have any problems, please just raise an [issue](https://github.com/sasjs/fileuploader/issues/new)!  And if you find it useful, we'd appreciate a STAR.
+
+For more information on the SASjs framework, see https://sasjs.io

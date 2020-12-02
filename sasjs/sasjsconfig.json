@@ -12,7 +12,7 @@
       "serverType": "SASVIYA",
       "serverUrl": "",
       "appLoc": "/Public/app/fileuploader",
-      "deployServicePack": false,
+      "deployServicePack": true,
       "tgtDeployScripts": [
         "sasjs/build/copyscript.sh"
       ],
