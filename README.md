@@ -10,8 +10,8 @@ The file is sent to SAS where the path is verified, the file is written, and a d
 This app can be deployed as a streaming SAS app in two lines of code:
 
 ```
-filename sasjs url "https://raw.githubusercontent.com/sasjs/fileuploader/master/runme.sas";
-%inc sasjs;
+filename mc url "https://raw.githubusercontent.com/sasjs/fileuploader/master/runme.sas";
+%inc mc;
 ```
 
 You can now open it at `YOURSERVER/SASJobExecution?_program=/Public/app/fileuploader/clickme`.
