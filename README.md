@@ -4,6 +4,8 @@ This is a very simple demo app to show how to build a file upload process.  The 
 
 The file is sent to SAS where the path is verified, the file is written, and a directory listing is returned.
 
+![screenshot of sasjs file uploader](https://i.imgur.com/alHXcTK.png)
+
 ## Fast Deploy
 This app can be deployed as a streaming SAS app in two lines of code:
 
