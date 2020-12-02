@@ -1,6 +1,10 @@
 {
-  "cmnMacros": ["macros"],
-  "cmnServices": ["services/common"],
+  "cmnMacros": [
+    "macros"
+  ],
+  "cmnServices": [
+    "services/common"
+  ],
   "useMacroCore": true,
   "targets": [
     {
@@ -8,8 +12,8 @@
       "serverType": "SASVIYA",
       "serverUrl": "",
       "appLoc": "/Public/app/fileuploader",
-      "deployServicePack": true,
-      "tgtDeployScripts":[
+      "deployServicePack": false,
+      "tgtDeployScripts": [
         "sasjs/build/copyscript.sh"
       ],
       "assetPaths": [],
