@@ -32,7 +32,7 @@
 filename filein filesrvc "&infile";
 filename fileout "&path/&outfile";
 
-%mp_binarycopy(inref=inref, outref=fileout)
+%mp_binarycopy(inref=filein, outref=fileout)
 
 %mp_abort(iftrue= (&syscc ge 4)
   ,mac=&_program..sas
