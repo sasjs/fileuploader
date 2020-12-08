@@ -2204,7 +2204,7 @@ file sascode;
  put '/* read in the file from the file service */';
  put 'filename filein filesrvc "&infile";';
  put 'filename fileout "&path/&outfile";';
- put '%mp_binarycopy(inref=inref, outref=fileout)';
+ put '%mp_binarycopy(inref=filein, outref=fileout)';
  put '%mp_abort(iftrue= (&syscc ge 4)';
  put ',mac=&_program..sas';
  put ',msg=%str(Error occurred whilst reading &infile and writing to &outfile )';
