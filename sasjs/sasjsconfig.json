@@ -1,25 +1,30 @@
 {
-  "cmnMacros": [
+  "macroFolders": [
     "macros"
   ],
-  "cmnServices": [
+  "serviceConfig": {
+    "serviceFolders": [
     "services/common"
-  ],
-  "useMacroCore": true,
+    ]
+  },
   "targets": [
     {
       "name": "viya",
       "serverType": "SASVIYA",
       "serverUrl": "",
       "appLoc": "/Public/app/fileuploader",
-      "deployServicePack": true,
-      "tgtDeployScripts": [
-        "sasjs/build/copyscript.sh"
-      ],
+      "deployConfig": {
+        "deployServicePack": true,
+        "deployScripts": [
+          "sasjs/build/copyscript.sh"
+        ]
+      },
+      "streamConfig": {
       "assetPaths": [],
       "streamWeb": true,
       "streamWebFolder": "webv",
       "webSourcePath": "src"
+      }
     }
   ]
 }
