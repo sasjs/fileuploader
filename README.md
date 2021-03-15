@@ -1,3 +1,5 @@
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/sasjs/fileuploader)
+
 # Demo SASjs File Uploader app
 
 This is a very simple demo app to show how to build a file upload process.  The app has a logon screen, then an input box (so the user can provide a target directory path), and a file picker.
