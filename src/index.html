@@ -15,13 +15,11 @@
           appLoc: "/Public/app/fileuploader",
           serverType: "SASVIYA",
           debug: false,
+          useComputeApi: true
         });
       }
     </script>
-    <!-- uncomment to enable regular (non streamed) web app
-      <script src="https://cdn.jsdelivr.net/npm/@sasjs/adapter@2/index.js"></script>
-    -->
-    <script src="../node_modules/@sasjs/adapter/index.js"></script>
+    <script src="sasjs.js"></script>
     <script src="scripts.js"></script>
   </head>
   <body onload="initSasJs()">

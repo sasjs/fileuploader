@@ -58,7 +58,9 @@ To be able to run the deploy script, two environment variables need to be set:
 You can run the script like so:
 
 ```
-SSH_ACCOUNT=me@my-sas-server.com DEPLOY_PATH=/var/www/html/my-folder/sasjs-tests npm run deploy
+SSH_ACCOUNT=me@my-sas-server.com
+DEPLOY_PATH=/var/www/html/my-folder/file-uploader
+npm run deploy
 ```
 
 ## Closing remarks
