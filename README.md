@@ -8,6 +8,9 @@ The file is sent to SAS where the path is verified, the file is written, and a d
 
 ![screenshot of sasjs file uploader](https://i.imgur.com/alHXcTK.png)
 
+By default the max size you can upload is 100mb.  To change this, follow the instructions below:
+https://sasensei.com/flash/run/356
+
 ## Fast Deploy
 This app can be deployed as a streaming SAS app in two lines of code:
 
