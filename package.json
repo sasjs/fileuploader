@@ -6,7 +6,7 @@
   "scripts": {
     "deploy": "rsync -avhe ssh ./src/* --delete $SSH_ACCOUNT:$DEPLOY_PATH",
     "deploywin": "scp -i ~/.ssh/private_key -r ./src/* $SSH_ACCOUNT:$DEPLOY_PATH",
-    "prepare": "cp node_modules/@sasjs/adapter/index.js src/sasjs.js"
+    "prepare": "cpy-t node_modules/@sasjs/adapter/index.js src/sasjs.js"
   },
   "keywords": [
     "SAS",
@@ -18,5 +18,8 @@
   "dependencies": {
     "@sasjs/adapter": "^2.10.0",
     "@sasjs/core": "^2.39.0"
+  },
+  "devDependencies": {
+    "cpy-t": "^1.1.5"
   }
 }

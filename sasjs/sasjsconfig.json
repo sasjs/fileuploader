@@ -10,10 +10,10 @@
       "name": "viya",
       "serverType": "SASVIYA",
       "serverUrl": "https://sas.analytium.co.uk",
-      "appLoc": "/Public/app/saad/fileuploader",
+      "appLoc": "/Public/app/fileuploader",
       "deployConfig": {
         "deployServicePack": true,
-        "deployScripts": []
+        "deployScripts": ["sasjs/build/copyscript.sh"]
       },
       "streamConfig": {
         "assetPaths": [],
