@@ -11,12 +11,16 @@
     <link rel="stylesheet" href="table.css" />
     <script>
       function initSasJs() {
-        sasJs = new SASjs.default({
-          appLoc: "/Public/app/fileuploader",
-          serverType: "SASVIYA",
+        sasjs = new SASjs.default({
+          appLoc: '/Public/app/saad/fileuploader',
+          serverType: 'SASVIYA',
+          serverUrl: 'https://sas.analytium.co.uk',
           debug: false,
-          useComputeApi: true
-        });
+          useComputeApi: true,
+        })
+        sasjs.checkSession().then((res) => {
+          if (res.isLoggedIn) afterLogin()
+        })
       }
     </script>
     <script src="sasjs.js"></script>
@@ -32,10 +36,10 @@
       </label>
     </div>
 
-    <h1>
-      This is a template <span class="code">SASjs</span> app
-    </h1>
-    <p> You can use it to upload a local file to a directory on your Viya server</p>
+    <h1>This is a template <span class="code">SASjs</span> app</h1>
+    <p>
+      You can use it to upload a local file to a directory on your Viya server
+    </p>
     <div class="form" id="login-form">
       <input type="text" id="username" placeholder="Enter username" />
       <input type="password" id="password" placeholder="Enter password" />

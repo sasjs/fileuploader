@@ -1,29 +1,25 @@
 {
   "$schema": "https://cli.sasjs.io/sasjsconfig-schema.json",
-  "macroFolders": [
-    "sasjs/macros"
-  ],
+  "macroFolders": ["sasjs/macros"],
   "serviceConfig": {
-    "serviceFolders": [
-    "sasjs/services/common"
-    ]
+    "serviceFolders": ["sasjs/services/common"]
   },
+  "defaultTarget": "viya",
   "targets": [
     {
       "name": "viya",
       "serverType": "SASVIYA",
-      "appLoc": "/Public/app/fileuploader",
+      "serverUrl": "https://sas.analytium.co.uk",
+      "appLoc": "/Public/app/saad/fileuploader",
       "deployConfig": {
         "deployServicePack": true,
-        "deployScripts": [
-          "sasjs/build/copyscript.sh"
-        ]
+        "deployScripts": []
       },
       "streamConfig": {
-      "assetPaths": [],
-      "streamWeb": true,
-      "streamWebFolder": "webv",
-      "webSourcePath": "src"
+        "assetPaths": [],
+        "streamWeb": true,
+        "streamWebFolder": "webv",
+        "webSourcePath": "src"
       }
     }
   ]
