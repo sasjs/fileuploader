@@ -1,13 +1,10 @@
 {
   "$schema": "https://cli.sasjs.io/sasjsconfig-schema.json",
-  "macroFolders": [
-    "sasjs/macros"
-  ],
+  "macroFolders": ["sasjs/macros"],
   "serviceConfig": {
-    "serviceFolders": [
-    "sasjs/services/common"
-    ]
+    "serviceFolders": ["sasjs/services/common"]
   },
+  "defaultTarget": "viya",
   "targets": [
     {
       "name": "viya",
@@ -15,15 +12,13 @@
       "appLoc": "/Public/app/fileuploader",
       "deployConfig": {
         "deployServicePack": true,
-        "deployScripts": [
-          "sasjs/build/copyscript.sh"
-        ]
+        "deployScripts": ["sasjs/build/copyscript.sh"]
       },
       "streamConfig": {
-      "assetPaths": [],
-      "streamWeb": true,
-      "streamWebFolder": "webv",
-      "webSourcePath": "src"
+        "assetPaths": [],
+        "streamWeb": true,
+        "streamWebFolder": "webv",
+        "webSourcePath": "src"
       }
     }
   ]
