@@ -89,6 +89,7 @@ function upload() {
 
 function fileChange() {
   const uploadButton = document.querySelector('#upload')
+  const filePath = document.getElementById('filePath').value
   const x = document.getElementById('myfile')
   let txt = ''
   if ('files' in x) {
@@ -97,14 +98,13 @@ function fileChange() {
       uploadButton.disabled = true
     } else {
       uploadButton.disabled = false
-      for (let i = 0; i < x.files.length; i++) {
-        txt += '<br><strong>' + (i + 1) + '. file</strong><br>'
-        const file = x.files[i]
+      const file = x.files[0]
+      if (file) {
         if ('name' in file) {
-          txt += 'name: ' + file.name + '<br>'
+          txt += `Location: ${filePath}/${file.name} <br>`
         }
         if ('size' in file) {
-          txt += 'size: ' + (file.size / 1024).toFixed(2) + ' bytes <br>'
+          txt += 'Total Size: ' + fileSize(file.size) + '<br>'
         }
       }
     }
@@ -141,4 +141,20 @@ function populateTable(list) {
     tbody.appendChild(tr)
   })
   table.style.display = 'block'
+}
+
+function fileSize(bytes) {
+  if (bytes > 2 ** 40) {
+    return (bytes / 2 ** 40).toFixed(2) + 'TB'
+  }
+  if (bytes > 2 ** 30) {
+    return (bytes / 2 ** 30).toFixed(2) + 'GB'
+  }
+  if (bytes > 2 ** 20) {
+    return (bytes / 2 ** 20).toFixed(2) + 'MB'
+  }
+  if (bytes > 2 ** 10) {
+    return (bytes / 2 ** 10).toFixed(2) + 'KB'
+  }
+  return bytes + 'bytes'
 }
