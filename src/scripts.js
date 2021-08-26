@@ -24,7 +24,7 @@ function afterLogin() {
   uploadButton.style.display = 'inline-block'
 }
 
-function upload() {
+async function upload() {
   const uploadButton = document.querySelector('#upload')
   uploadButton.disabled = true
   const x = document.getElementById('myfile')
