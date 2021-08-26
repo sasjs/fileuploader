@@ -59,7 +59,7 @@ async function upload() {
           .then(
             (res) => {
               if (res.sasjsAbort) {
-                alert('Error Occurred')
+                alert(`Error Occurred\n${res.sasjsAbort[0].MSG}`)
                 const error = `MAC: ${res.sasjsAbort[0].MAC}\n MSG: ${res.sasjsAbort[0].MSG}`
                 console.log(res)
                 throw new Error(error)
@@ -71,14 +71,14 @@ async function upload() {
                 barStatus.style.width = status
                 populateTable(res.dirlist)
               } else {
-                alert('Error Occurred')
+                alert('Error Occurred\nResponse does not contain dir list')
                 console.log('FAILED')
                 console.log(res)
                 throw new Error('Response does not contain dir list')
               }
             },
             (err) => {
-              alert('Error Occurred')
+              alert(`Error Occurred\n${err.message ?? ''}`)
               console.log('FAILED')
               throw err
             }
@@ -101,7 +101,7 @@ async function upload() {
               }
             },
             (err) => {
-              alert('Error Occurred')
+              alert(`Error Occurred\n${err.message ?? ''}`)
               console.log('FAILED')
               console.log(err)
               throw new Error(err)
