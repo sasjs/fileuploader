@@ -28,31 +28,31 @@ function upload() {
   const x = document.getElementById('myfile')
   const filePath = document.getElementById('filePath').value
 
-  const filesToUpload = []
-  for (const file of x.files) {
-    filesToUpload.push({
-      file: file,
-      fileName: file.name,
-    })
-  }
-  sasjs
-    .uploadFile('services/common/upload', filesToUpload, { path: filePath })
-    .then(
-      (res) => {
-        if (typeof res.dirlist === 'object') {
-          populateTable(res.dirlist)
-        } else {
+  const file = x.files[0]
+  if (file) {
+    sasjs
+      .uploadFile(
+        'services/common/upload',
+        [{ file: file, fileName: file.name }],
+        { path: filePath }
+      )
+      .then(
+        (res) => {
+          if (typeof res.dirlist === 'object') {
+            populateTable(res.dirlist)
+          } else {
+            alert('Error Occurred')
+            console.log('FAILED')
+            console.log(res)
+          }
+        },
+        (err) => {
           alert('Error Occurred')
           console.log('FAILED')
-          console.log(res)
+          console.log(err)
         }
-      },
-      (err) => {
-        alert('Error Occurred')
-        console.log('FAILED')
-        console.log(err)
-      }
-    )
+      )
+  }
 }
 
 function fileChange() {
