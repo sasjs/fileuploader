@@ -58,14 +58,16 @@ async function upload() {
           )
           .then(
             (res) => {
-              fileUploadStatus.innerText = `Uploaded: ${fileSize(
-                chunkEnd
-              )} (${status})`
               if (res.sasjsAbort) {
+                alert('Error Occurred')
                 const error = `MAC: ${res.sasjsAbort[0].MAC}\n MSG: ${res.sasjsAbort[0].MSG}`
+                console.log(res)
                 throw new Error(error)
               }
               if (typeof res.dirlist === 'object') {
+                fileUploadStatus.innerText = `Uploaded: ${fileSize(
+                  chunkEnd
+                )} (${status})`
                 barStatus.style.width = status
                 populateTable(res.dirlist)
               } else {
