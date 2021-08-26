@@ -27,31 +27,63 @@ function afterLogin() {
 function upload() {
   const x = document.getElementById('myfile')
   const filePath = document.getElementById('filePath').value
+  const chunkSize = 10 * 2 ** 20
 
   const file = x.files[0]
   if (file) {
-    sasjs
-      .uploadFile(
-        'services/common/upload',
-        [{ file: file, fileName: file.name }],
-        { path: filePath }
-      )
-      .then(
-        (res) => {
-          if (typeof res.dirlist === 'object') {
-            populateTable(res.dirlist)
-          } else {
-            alert('Error Occurred')
-            console.log('FAILED')
-            console.log(res)
-          }
-        },
-        (err) => {
-          alert('Error Occurred')
-          console.log('FAILED')
-          console.log(err)
-        }
-      )
+    const numberOfChunks = Math.ceil(file.size / chunkSize)
+    for (let i = 0; i < numberOfChunks; i++) {
+      const chunkStart = chunkSize * i
+      const chunkEnd = Math.min(chunkStart + chunkSize, file.size)
+      const chunk = file.slice(chunkStart, chunkEnd)
+      const newFile = new File([chunk], file.name, {
+        type: file.type,
+        lastModified: file.lastModified,
+      })
+      if (i === 0) {
+        await sasjs
+          .uploadFile(
+            'services/common/upload',
+            [{ file: newFile, fileName: file.name }],
+            { path: filePath }
+          )
+          .then(
+            (res) => {
+              if (typeof res.dirlist === 'object') {
+                populateTable(res.dirlist)
+              } else {
+                alert('Error Occurred')
+                console.log('FAILED')
+                console.log(res)
+                throw new Error('Response does not contain dir list')
+              }
+            },
+            (err) => {
+              alert('Error Occurred')
+              console.log('FAILED')
+              throw err
+            }
+          )
+      } else {
+        await sasjs
+          .uploadFile(
+            'services/common/append',
+            [{ file: newFile, fileName: file.name }],
+            { path: filePath }
+          )
+          .then(
+            (res) => {
+              console.log(res)
+            },
+            (err) => {
+              alert('Error Occurred')
+              console.log('FAILED')
+              console.log(err)
+              throw new Error(err)
+            }
+          )
+      }
+    }
   }
 }
 
