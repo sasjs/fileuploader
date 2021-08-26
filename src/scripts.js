@@ -25,13 +25,21 @@ function afterLogin() {
 }
 
 function upload() {
+  const uploadButton = document.querySelector('#upload')
+  uploadButton.disabled = true
   const x = document.getElementById('myfile')
   const filePath = document.getElementById('filePath').value
   const chunkSize = 10 * 2 ** 20
+  const progressBar = document.getElementById('progressBar')
+  const barStatus = document.getElementById('barStatus')
+  const fileUploadStatus = document.getElementById('fileUploadStatus')
+  fileUploadStatus.innerText = '0%'
+  progressBar.style.height = '30px'
 
   const file = x.files[0]
   if (file) {
     const numberOfChunks = Math.ceil(file.size / chunkSize)
+
     for (let i = 0; i < numberOfChunks; i++) {
       const chunkStart = chunkSize * i
       const chunkEnd = Math.min(chunkStart + chunkSize, file.size)
@@ -40,6 +48,7 @@ function upload() {
         type: file.type,
         lastModified: file.lastModified,
       })
+      const status = Math.ceil((chunkEnd / file.size) * 100) + '%'
       if (i === 0) {
         await sasjs
           .uploadFile(
@@ -49,7 +58,15 @@ function upload() {
           )
           .then(
             (res) => {
+              fileUploadStatus.innerText = `Uploaded: ${fileSize(
+                chunkEnd
+              )} (${status})`
+              if (res.sasjsAbort) {
+                const error = `MAC: ${res.sasjsAbort[0].MAC}\n MSG: ${res.sasjsAbort[0].MSG}`
+                throw new Error(error)
+              }
               if (typeof res.dirlist === 'object') {
+                barStatus.style.width = status
                 populateTable(res.dirlist)
               } else {
                 alert('Error Occurred')
@@ -73,7 +90,13 @@ function upload() {
           )
           .then(
             (res) => {
-              console.log(res)
+              barStatus.style.width = status
+              fileUploadStatus.innerText = `Uploaded: ${fileSize(
+                chunkEnd
+              )} (${status})`
+              if (status === '100%') {
+                uploadButton.disabled = false
+              }
             },
             (err) => {
               alert('Error Occurred')
