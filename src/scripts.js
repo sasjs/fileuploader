@@ -65,7 +65,7 @@ async function upload() {
                 throw new Error(error)
               }
               if (typeof res.dirlist === 'object') {
-                fileUploadStatus.innerText = `Uploaded: ${fileSize(
+                fileUploadStatus.innerText = `Uploaded: ${bytesToSize(
                   chunkEnd
                 )} (${status})`
                 barStatus.style.width = status
@@ -93,7 +93,7 @@ async function upload() {
           .then(
             (res) => {
               barStatus.style.width = status
-              fileUploadStatus.innerText = `Uploaded: ${fileSize(
+              fileUploadStatus.innerText = `Uploaded: ${bytesToSize(
                 chunkEnd
               )} (${status})`
               if (status === '100%') {
@@ -129,7 +129,7 @@ function fileChange() {
           txt += `Location: ${filePath}/${file.name} <br>`
         }
         if ('size' in file) {
-          txt += 'Total Size: ' + fileSize(file.size) + '<br>'
+          txt += 'Total Size: ' + bytesToSize(file.size) + '<br>'
         }
       }
     }
@@ -168,18 +168,20 @@ function populateTable(list) {
   table.style.display = 'block'
 }
 
-function fileSize(bytes) {
-  if (bytes > 2 ** 40) {
-    return (bytes / 2 ** 40).toFixed(2) + 'TB'
-  }
-  if (bytes > 2 ** 30) {
-    return (bytes / 2 ** 30).toFixed(2) + 'GB'
-  }
-  if (bytes > 2 ** 20) {
-    return (bytes / 2 ** 20).toFixed(2) + 'MB'
-  }
-  if (bytes > 2 ** 10) {
-    return (bytes / 2 ** 10).toFixed(2) + 'KB'
-  }
-  return bytes + 'bytes'
+function bytesToSize(
+  bytes,
+  decimals = 1,
+  maxValue = 1024 * 1024 * 1024 * 1024 // 1TB
+) {
+  if (bytes === 0) return '0 B'
+
+  bytes = bytes > maxValue ? maxValue : bytes
+
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB']
+  const k = 1024
+  const dm = decimals < 0 ? 0 : decimals
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  return (bytes / Math.pow(k, i)).toFixed(dm) + ' ' + sizes[i]
 }
