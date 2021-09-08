@@ -24,39 +24,97 @@ function afterLogin() {
   uploadButton.style.display = 'inline-block'
 }
 
-function upload() {
+async function upload() {
+  const uploadButton = document.querySelector('#upload')
+  uploadButton.disabled = true
   const x = document.getElementById('myfile')
   const filePath = document.getElementById('filePath').value
+  const chunkSize = 10 * 2 ** 20
+  const progressBar = document.getElementById('progressBar')
+  const barStatus = document.getElementById('barStatus')
+  const fileUploadStatus = document.getElementById('fileUploadStatus')
+  fileUploadStatus.innerText = '0%'
+  progressBar.style.height = '30px'
 
-  const filesToUpload = []
-  for (const file of x.files) {
-    filesToUpload.push({
-      file: file,
-      fileName: file.name,
-    })
-  }
-  sasjs
-    .uploadFile('services/common/upload', filesToUpload, { path: filePath })
-    .then(
-      (res) => {
-        if (typeof res.dirlist === 'object') {
-          populateTable(res.dirlist)
-        } else {
-          alert('Error Occurred')
-          console.log('FAILED')
-          console.log(res)
-        }
-      },
-      (err) => {
-        alert('Error Occurred')
-        console.log('FAILED')
-        console.log(err)
+  const file = x.files[0]
+  if (file) {
+    const numberOfChunks = Math.ceil(file.size / chunkSize)
+
+    for (let i = 0; i < numberOfChunks; i++) {
+      const chunkStart = chunkSize * i
+      const chunkEnd = Math.min(chunkStart + chunkSize, file.size)
+      const chunk = file.slice(chunkStart, chunkEnd)
+      const newFile = new File([chunk], file.name, {
+        type: file.type,
+        lastModified: file.lastModified,
+      })
+      const status = Math.ceil((chunkEnd / file.size) * 100) + '%'
+      if (i === 0) {
+        await sasjs
+          .uploadFile(
+            'services/common/upload',
+            [{ file: newFile, fileName: file.name }],
+            { path: filePath }
+          )
+          .then(
+            (res) => {
+              if (res.sasjsAbort) {
+                alert(`Error Occurred\n${res.sasjsAbort[0].MSG}`)
+                const error = `MAC: ${res.sasjsAbort[0].MAC}\n MSG: ${res.sasjsAbort[0].MSG}`
+                console.log(res)
+                throw new Error(error)
+              }
+              if (typeof res.dirlist === 'object') {
+                fileUploadStatus.innerText = `Uploaded: ${bytesToSize(
+                  chunkEnd
+                )} (${status})`
+                barStatus.style.width = status
+                populateTable(res.dirlist)
+              } else {
+                alert('Error Occurred\nResponse does not contain dir list')
+                console.log('FAILED')
+                console.log(res)
+                throw new Error('Response does not contain dir list')
+              }
+            },
+            (err) => {
+              alert(`Error Occurred\n${err.message ?? ''}`)
+              console.log('FAILED')
+              throw err
+            }
+          )
+      } else {
+        await sasjs
+          .uploadFile(
+            'services/common/append',
+            [{ file: newFile, fileName: file.name }],
+            { path: filePath }
+          )
+          .then(
+            (res) => {
+              barStatus.style.width = status
+              fileUploadStatus.innerText = `Uploaded: ${bytesToSize(
+                chunkEnd
+              )} (${status})`
+              if (status === '100%') {
+                uploadButton.disabled = false
+              }
+            },
+            (err) => {
+              alert(`Error Occurred\n${err.message ?? ''}`)
+              console.log('FAILED')
+              console.log(err)
+              throw new Error(err)
+            }
+          )
       }
-    )
+    }
+  }
 }
 
 function fileChange() {
   const uploadButton = document.querySelector('#upload')
+  const filePath = document.getElementById('filePath').value
   const x = document.getElementById('myfile')
   let txt = ''
   if ('files' in x) {
@@ -65,14 +123,13 @@ function fileChange() {
       uploadButton.disabled = true
     } else {
       uploadButton.disabled = false
-      for (let i = 0; i < x.files.length; i++) {
-        txt += '<br><strong>' + (i + 1) + '. file</strong><br>'
-        const file = x.files[i]
+      const file = x.files[0]
+      if (file) {
         if ('name' in file) {
-          txt += 'name: ' + file.name + '<br>'
+          txt += `Location: ${filePath}/${file.name} <br>`
         }
         if ('size' in file) {
-          txt += 'size: ' + (file.size / 1024).toFixed(2) + ' bytes <br>'
+          txt += 'Total Size: ' + bytesToSize(file.size) + '<br>'
         }
       }
     }
@@ -109,4 +166,22 @@ function populateTable(list) {
     tbody.appendChild(tr)
   })
   table.style.display = 'block'
+}
+
+function bytesToSize(
+  bytes,
+  decimals = 1,
+  maxValue = 1024 * 1024 * 1024 * 1024 // 1TB
+) {
+  if (bytes === 0) return '0 B'
+
+  bytes = bytes > maxValue ? maxValue : bytes
+
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB']
+  const k = 1024
+  const dm = decimals < 0 ? 0 : decimals
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  return (bytes / Math.pow(k, i)).toFixed(dm) + ' ' + sizes[i]
 }

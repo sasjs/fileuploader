@@ -1,5 +1,5 @@
 * {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -75,4 +75,21 @@ select {
 .debug span {
   font-size: 20px;
   vertical-align: -webkit-baseline-middle;
+}
+
+#progressBar {
+  position: relative;
+  width: 100%;
+  background-color: #ddd;
+}
+
+#barStatus {
+  position: absolute;
+  height: 100%;
+  background-color: #25f;
+}
+
+#fileUploadStatus {
+  display: flex;
+  justify-content: center;
 }
