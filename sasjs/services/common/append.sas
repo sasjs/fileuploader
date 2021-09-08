@@ -8,6 +8,7 @@
   @li mf_isdir.sas
   @li mp_abort.sas
   @li mp_binarycopy.sas
+  @li mp_webin.sas
 
 **/
 
@@ -17,27 +18,25 @@
 )
 
 /*
-  Grab the file uri. IF there are multiple, they are numbered, so
-  placeholder logic is provided for convenience.
+  Straighten up the _webin_xxx variables
 */
-%global _webin_fileuri _webin_fileuri1 _webin_filename _webin_filename1;
-%let infile=%sysfunc(coalescec(&_webin_fileuri1,&_webin_fileuri));
-%let outfile=%sysfunc(coalescec(&_webin_filename1,&_webin_filename));
+%mp_webin()
 
-/* read in the file from the file service */
-filename filein filesrvc "&infile";
-filename fileout "&path/&outfile";
+/* setup the output destination */
+%let outloc=&path/&_webin_filename1;
+filename fileout "&outloc";
 
-%mp_binarycopy(inref=filein, outref=fileout, mode=APPEND)
+/* send the data in APPEND mode */
+%mp_binarycopy(inref=&_webin_fileref1, outref=fileout, mode=APPEND)
 
 %mp_abort(iftrue= (&syscc ge 4)
   ,mac=&_program..sas
-  ,msg=%str(Error occurred whilst reading &infile and writing to &outfile )
+  ,msg=%str(Error occurred reading &_webin_fileref1 and writing to &outloc)
 )
 
 /* success - lets create a directory listing */
 data fromsas;
-  filesize="%mf_getfilesize(fpath=&path/&outfile,format=yes)";
+  filesize="%mf_getfilesize(fpath=&path/&_webin_filename1,format=yes)";
 run;
 
 /* now send it back to the frontend */

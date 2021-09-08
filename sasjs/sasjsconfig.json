@@ -1,24 +1,46 @@
 {
   "$schema": "https://cli.sasjs.io/sasjsconfig-schema.json",
-  "macroFolders": ["sasjs/macros"],
+  "macroFolders": [
+    "sasjs/macros"
+  ],
   "serviceConfig": {
-    "serviceFolders": ["sasjs/services/common"]
+    "serviceFolders": [
+      "sasjs/services/common"
+    ]
+  },
+  "streamConfig": {
+    "assetPaths": [],
+    "streamWeb": true,
+    "streamWebFolder": "web",
+    "webSourcePath": "src"
   },
   "defaultTarget": "viya",
   "targets": [
     {
       "name": "viya",
+      "serverUrl": "https://sas.analytium.co.uk",
       "serverType": "SASVIYA",
+      "allowInsecureRequests": false,
       "appLoc": "/Public/app/fileuploader",
+      "macroFolders": [],
+      "programFolders": [],
       "deployConfig": {
         "deployServicePack": true,
-        "deployScripts": ["sasjs/build/copyscript.sh"]
+        "deployScripts": [
+          "sasjs/utils/copyviya.sh"
+        ]
       },
-      "streamConfig": {
-        "assetPaths": [],
-        "streamWeb": true,
-        "streamWebFolder": "webv",
-        "webSourcePath": "src"
+      "contextName": "SAS Job Execution compute context"
+    },
+    {
+      "name": "sas9",
+      "serverType": "SAS9",
+      "appLoc": "/30.SASApps/3030.Projects/fileuploader",
+      "deployConfig": {
+        "deployServicePack": true,
+        "deployScripts": [
+          "sasjs/utils/copysas9.sh"
+        ]
       }
     }
   ]
