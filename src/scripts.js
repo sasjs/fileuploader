@@ -1,4 +1,5 @@
 let sasjs
+let cancelled = false
 
 function login() {
   const username = document.querySelector('#username').value
@@ -20,27 +21,36 @@ function afterLogin() {
 
   const uploadForm = document.querySelector('#upload-form')
   const uploadButton = document.querySelector('#upload')
+  const cancelButton = document.querySelector('#cancel')
   uploadForm.style.display = 'flex'
   uploadButton.style.display = 'inline-block'
+  cancelButton.style.display = 'inline-block'
 }
 
 async function upload() {
   const uploadButton = document.querySelector('#upload')
   uploadButton.disabled = true
+  const cancelButton = document.querySelector('#cancel')
+  cancelButton.disabled = false
   const x = document.getElementById('myfile')
   const filePath = document.getElementById('filePath').value
-  const chunkSize = 10 * 2 ** 20
+  const chunkSize = 5 * 1024 * 1024 //chunk size is 5MB
   const progressBar = document.getElementById('progressBar')
   const barStatus = document.getElementById('barStatus')
   const fileUploadStatus = document.getElementById('fileUploadStatus')
   fileUploadStatus.innerText = '0%'
   progressBar.style.height = '30px'
-
+  let completed = true
   const file = x.files[0]
   if (file) {
     const numberOfChunks = Math.ceil(file.size / chunkSize)
 
     for (let i = 0; i < numberOfChunks; i++) {
+      if (cancelled === true) {
+        completed = false
+        alert('Upload cancelled')
+        break
+      }
       const chunkStart = chunkSize * i
       const chunkEnd = Math.min(chunkStart + chunkSize, file.size)
       const chunk = file.slice(chunkStart, chunkEnd)
@@ -58,29 +68,22 @@ async function upload() {
           )
           .then(
             (res) => {
-              if (res.sasjsAbort) {
-                alert(`Error Occurred\n${res.sasjsAbort[0].MSG}`)
+              if (res?.sasjsAbort) {
                 const error = `MAC: ${res.sasjsAbort[0].MAC}\n MSG: ${res.sasjsAbort[0].MSG}`
-                console.log(res)
-                throw new Error(error)
+                displayError(new Error(error))
               }
-              if (typeof res.dirlist === 'object') {
+              if (typeof res?.dirlist === 'object') {
                 fileUploadStatus.innerText = `Uploaded: ${bytesToSize(
                   chunkEnd
                 )} (${status})`
                 barStatus.style.width = status
                 populateTable(res.dirlist)
               } else {
-                alert('Error Occurred\nResponse does not contain dir list')
-                console.log('FAILED')
-                console.log(res)
-                throw new Error('Response does not contain dir list')
+                displayError(new Error('Response does not contain dir list'))
               }
             },
             (err) => {
-              alert(`Error Occurred\n${err.message ?? ''}`)
-              console.log('FAILED')
-              throw err
+              displayError(err)
             }
           )
       } else {
@@ -96,20 +99,63 @@ async function upload() {
               fileUploadStatus.innerText = `Uploaded: ${bytesToSize(
                 chunkEnd
               )} (${status})`
-              if (status === '100%') {
-                uploadButton.disabled = false
-              }
             },
             (err) => {
-              alert(`Error Occurred\n${err.message ?? ''}`)
-              console.log('FAILED')
-              console.log(err)
-              throw new Error(err)
+              displayError(err)
             }
           )
       }
     }
+    setTimeout(function () {
+      if (completed) {
+        alert('Successfully Uploaded')
+      }
+      resetPage()
+    }, 10)
   }
+}
+
+function cancel() {
+  console.log('upload cancelled')
+  const cancelButton = document.querySelector('#cancel')
+  cancelButton.disabled = true
+  cancelled = true
+}
+
+function resetPage() {
+  document.querySelector('#upload').disabled = true
+  document.querySelector('#cancel').disabled = true
+  document.getElementById('filestatus').innerHTML = 'Select file to upload.'
+  document.getElementById('myfile').value = ''
+  document.getElementById('progressBar').style.height = '0px'
+  document.getElementById('barStatus').style.width = '0%'
+  document.getElementById('fileUploadStatus').innerText = ''
+  document.getElementById('dirlist').style.display = 'none'
+  document.getElementById('horizontalLine').style.display = 'none'
+  cancelled = false
+}
+
+function displayError(err) {
+  alert('Error Occurred')
+  resetPage()
+  const requests = sasjs.getSasRequests()
+  if (requests.length > 0 && requests[0].logFile) {
+    const logFile = requests[0].logFile.replace(/\n*$/, '')
+    document.getElementById('horizontalLine').style.display = 'block'
+    document.getElementById('clearLog').style.display = 'inline-block'
+    document.getElementById('logTitle').style.display = 'inline-block'
+    const log = document.getElementById('log')
+    log.innerHTML = logFile
+    log.style.display = 'block'
+  }
+  throw err
+}
+
+function clearLog() {
+  document.getElementById('horizontalLine').style.display = 'none'
+  document.getElementById('logTitle').style.display = 'none'
+  document.getElementById('log').style.display = 'none'
+  document.getElementById('clearLog').style.display = 'none'
 }
 
 function fileChange() {
@@ -150,6 +196,7 @@ function setDebugState() {
 }
 
 function populateTable(list) {
+  document.getElementById('horizontalLine').style.display = 'block'
   const table = document.getElementById('dirlist')
   const tbody = table.children[0]
 

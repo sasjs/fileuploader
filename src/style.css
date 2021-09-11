@@ -12,13 +12,21 @@ body {
   padding-bottom: 30px;
 }
 
+hr {
+  clear: both;
+  display: block;
+  width: 100%;
+  background-color: black;
+  height: 1px;
+}
+
 .code {
   font-family: Monaco, Courier, monospace;
   border: 1px solid #d9d9d9;
   padding: 5px;
   border-radius: 3px;
-  background-color: #4a3f3f;
-  color: #f79205;
+  background-color: #000000;
+  color: #f6e30f;
 }
 
 button {
@@ -31,7 +39,16 @@ button {
   cursor: pointer;
   margin: 10px 0;
 }
-button[disabled] {
+
+#upload[disabled] {
+  background-color: gray;
+}
+
+#cancel {
+  background-color: red;
+}
+
+#cancel[disabled] {
   background-color: gray;
 }
 

@@ -35,6 +35,7 @@
     {
       "name": "sas9",
       "serverType": "SAS9",
+      "serverUrl": "https://sas.analytium.co.uk:8343",
       "appLoc": "/30.SASApps/3030.Projects/fileuploader",
       "deployConfig": {
         "deployServicePack": true,
