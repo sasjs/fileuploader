@@ -16,6 +16,7 @@
           serverType: 'SASVIYA',
           debug: false,
           useComputeApi: true,
+          loginMechanism: 'Redirected',
         })
         sasjs.checkSession().then((res) => {
           if (res.isLoggedIn) afterLogin()
