@@ -48,24 +48,31 @@
 
     <div class="form" id="upload-form" style="display: none">
       <input type="text" id="filePath" placeholder="Where to upload" />
-      <input
-        type="file"
-        id="myfile"
-        name="myfile"
-        multiple
-        onchange="fileChange()"
-      />
+      <input type="file" id="myfile" name="myfile" onchange="fileChange()" />
       <p id="filestatus"></p>
+      <div id="progressBar">
+        <div id="barStatus"></div>
+      </div>
+      <p id="fileUploadStatus"></p>
     </div>
-    <button
-      id="upload"
-      onclick="upload()"
-      disabled="disabled"
-      style="display: none"
-    >
-      Upload
-    </button>
-    <hr />
+    <div>
+      <button
+        id="upload"
+        onclick="upload()"
+        disabled="disabled"
+        style="display: none"
+      >
+        Upload
+      </button>
+      <button
+        id="cancel"
+        onclick="cancel()"
+        disabled="disabled"
+        style="display: none"
+      >
+        Cancel
+      </button>
+    </div>
     <div>
       <table id="dirlist" style="display: none">
         <tr>
@@ -76,5 +83,11 @@
         </tr>
       </table>
     </div>
+    <hr id="horizontalLine" style="display: none" />
+    <h1 id="logTitle" style="display: none">Logs</h1>
+    <div id="log" style="display: none"></div>
+    <button id="clearLog" onclick="clearLog()" style="display: none">
+      Clear
+    </button>
   </body>
 </html>
