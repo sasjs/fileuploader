@@ -1,14 +1,16 @@
 let sasjs
 let cancelled = false
 
-function login() {
+function login(resolve, reject) {
   const username = document.querySelector('#username').value
   const password = document.querySelector('#password').value
   sasjs.logIn(username, password).then((response) => {
     if (response.isLoggedIn === false) {
       alert('Invalid Username/Password')
+      if (reject) reject()
     } else {
       afterLogin()
+      if (resolve) resolve()
     }
   })
 }
@@ -25,6 +27,33 @@ function afterLogin() {
   uploadForm.style.display = 'flex'
   uploadButton.style.display = 'inline-block'
   cancelButton.style.display = 'inline-block'
+}
+
+function showLogin() {
+  const loginForm = document.querySelector('#login-form')
+  const loginButton = document.querySelector('#login')
+  loginForm.style.display = 'flex'
+  loginButton.style.display = 'inline-block'
+
+  const uploadForm = document.querySelector('#upload-form')
+  const uploadButton = document.querySelector('#upload')
+  const cancelButton = document.querySelector('#cancel')
+  uploadForm.style.display = 'none'
+  uploadButton.style.display = 'none'
+  cancelButton.style.display = 'none'
+}
+
+async function loginRequired() {
+  const sasjsConfig = sasjs.getSasjsConfig()
+  if (sasjsConfig.loginMechanism === 'Redirected') return await sasjs.logIn()
+
+  return new Promise((resolve, reject) => {
+    showLogin()
+    const loginButton = document.querySelector('#login')
+    loginButton.onclick = () => {
+      login(resolve, reject)
+    }
+  })
 }
 
 async function upload() {
@@ -64,7 +93,9 @@ async function upload() {
           .uploadFile(
             'services/common/upload',
             [{ file: newFile, fileName: file.name }],
-            { path: filePath }
+            { path: filePath },
+            undefined,
+            loginRequired
           )
           .then(
             (res) => {
@@ -91,7 +122,9 @@ async function upload() {
           .uploadFile(
             'services/common/append',
             [{ file: newFile, fileName: file.name }],
-            { path: filePath }
+            { path: filePath },
+            undefined,
+            loginRequired
           )
           .then(
             (res) => {
