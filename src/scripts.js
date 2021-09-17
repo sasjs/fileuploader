@@ -1,36 +1,65 @@
 let sasjs
 let cancelled = false
 
-function login() {
-  const username = document.querySelector('#username').value
-  const password = document.querySelector('#password').value
+function login(resolve, reject) {
+  const username = document.getElementById('username').value
+  const password = document.getElementById('password').value
   sasjs.logIn(username, password).then((response) => {
     if (response.isLoggedIn === false) {
       alert('Invalid Username/Password')
+      if (reject) reject()
     } else {
       afterLogin()
+      if (resolve) resolve()
     }
   })
 }
 
 function afterLogin() {
-  const loginForm = document.querySelector('#login-form')
-  const loginButton = document.querySelector('#login')
+  const loginForm = document.getElementById('login-form')
+  const loginButton = document.getElementById('login')
   loginForm.style.display = 'none'
   loginButton.style.display = 'none'
 
-  const uploadForm = document.querySelector('#upload-form')
-  const uploadButton = document.querySelector('#upload')
-  const cancelButton = document.querySelector('#cancel')
+  const uploadForm = document.getElementById('upload-form')
+  const uploadButton = document.getElementById('upload')
+  const cancelButton = document.getElementById('cancel')
   uploadForm.style.display = 'flex'
   uploadButton.style.display = 'inline-block'
   cancelButton.style.display = 'inline-block'
 }
 
+function showLogin() {
+  const loginForm = document.getElementById('login-form')
+  const loginButton = document.getElementById('login')
+  loginForm.style.display = 'flex'
+  loginButton.style.display = 'inline-block'
+
+  const uploadForm = document.getElementById('upload-form')
+  const uploadButton = document.getElementById('upload')
+  const cancelButton = document.getElementById('cancel')
+  uploadForm.style.display = 'none'
+  uploadButton.style.display = 'none'
+  cancelButton.style.display = 'none'
+}
+
+async function loginRequired() {
+  const sasjsConfig = sasjs.getSasjsConfig()
+  if (sasjsConfig.loginMechanism === 'Redirected') return await sasjs.logIn()
+
+  return new Promise((resolve, reject) => {
+    showLogin()
+    const loginButton = document.getElementById('login')
+    loginButton.onclick = () => {
+      login(resolve, reject)
+    }
+  })
+}
+
 async function upload() {
-  const uploadButton = document.querySelector('#upload')
+  const uploadButton = document.getElementById('upload')
   uploadButton.disabled = true
-  const cancelButton = document.querySelector('#cancel')
+  const cancelButton = document.getElementById('cancel')
   cancelButton.disabled = false
   const x = document.getElementById('myfile')
   const filePath = document.getElementById('filePath').value
@@ -64,7 +93,9 @@ async function upload() {
           .uploadFile(
             'services/common/upload',
             [{ file: newFile, fileName: file.name }],
-            { path: filePath }
+            { path: filePath },
+            undefined,
+            loginRequired
           )
           .then(
             (res) => {
@@ -91,7 +122,9 @@ async function upload() {
           .uploadFile(
             'services/common/append',
             [{ file: newFile, fileName: file.name }],
-            { path: filePath }
+            { path: filePath },
+            undefined,
+            loginRequired
           )
           .then(
             (res) => {
@@ -117,14 +150,14 @@ async function upload() {
 
 function cancel() {
   console.log('upload cancelled')
-  const cancelButton = document.querySelector('#cancel')
+  const cancelButton = document.getElementById('cancel')
   cancelButton.disabled = true
   cancelled = true
 }
 
 function resetPage() {
-  document.querySelector('#upload').disabled = true
-  document.querySelector('#cancel').disabled = true
+  document.getElementById('upload').disabled = true
+  document.getElementById('cancel').disabled = true
   document.getElementById('filestatus').innerHTML = 'Select file to upload.'
   document.getElementById('myfile').value = ''
   document.getElementById('progressBar').style.height = '0px'
@@ -159,7 +192,7 @@ function clearLog() {
 }
 
 function fileChange() {
-  const uploadButton = document.querySelector('#upload')
+  const uploadButton = document.getElementById('upload')
   const filePath = document.getElementById('filePath').value
   const x = document.getElementById('myfile')
   let txt = ''
