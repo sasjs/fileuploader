@@ -9,10 +9,10 @@
 data _null_;
   mode=symget('sysprocessmode');
   if mode in ("SAS Object Server","SAS Compute Server")
-  then call symputx('streamer','streamsas9.sas');
-  else call symputx('streamer','streamviya.sas');
+  then call symputx('streamer','streamviya.sas');
+  else call symputx('streamer','streamsas9.sas');
 run;
 
-filename mc url
+filename stream url
   "https://raw.githubusercontent.com/sasjs/fileuploader/master/&streamer";
-%inc mc;
+%inc stream;
