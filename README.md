@@ -23,7 +23,7 @@ filename mc url "https://raw.githubusercontent.com/sasjs/fileuploader/master/str
 %inc mc;
 ```
 
-You can now open it at `YOURSERVER/SASJobExecution?_program=/Public/app/fileuploader/services/clickme`.
+The link to open the app will be shown in the log.
 
 ## Alternatives
 It is also possible to upload files using SAS Studio, into your home directory (you can set symlinks to other locations).
