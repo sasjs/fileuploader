@@ -1,5 +1,6 @@
 {
   "name": "@sasjs/fileuploader",
+  "repository": "https://github.com/sasjs/fileuploader",
   "version": "1.0.0",
   "description": "A plain javascript app to demonstrate the process of uploading a file (with a parameter) and dealing with the response from SAS",
   "main": "index.js",
@@ -16,10 +17,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sasjs/adapter": "^2.11.2",
+    "@sasjs/adapter": "^2.11.3",
     "@sasjs/core": "^2.45.2"
   },
   "devDependencies": {
+    "@types/tough-cookie": "^4.0.1",
     "cpy-t": "^1.1.5"
   }
 }
