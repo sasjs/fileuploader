@@ -2,23 +2,28 @@
 
 # Demo SASjs File Uploader app
 
-This is a very simple demo app to show how to build a file upload process.  The app has a logon screen, then an input box (so the user can provide a target directory path), and a file picker.
+This is a vanilla JS demo app to show how to build a SAS-Powered file upload process.  The app has a logon screen, then an input box (so the user can provide a target directory path), and a file picker.
 
 The file is sent to SAS where the path is verified, the file is written, and a directory listing is returned.
 
+If the file is greater than 5mb it is sent to SAS in chunks, with a progress bar displayed.
+
 ![screenshot of sasjs file uploader](https://i.imgur.com/alHXcTK.png)
 
-By default the max size you can upload is 100mb.  To change this, follow these instructions: https://sasensei.com/flash/run/356
+If the user logs out of SAS whilst an upload is in progress, then the app will prompt for credentials on the next request.  The "redirect" flow is implemented, which is compatible with 2FA and other more complex authentication mechanisms.
 
 ## Fast Deploy
-This app can be deployed as a streaming SAS app in two lines of code:
+This app can be deployed as a streaming SAS app by running the code below.  Be
+sure to set the value of `appLoc` to your preferred parent folder location in
+metadata (SAS 9) or SAS Drive (Viya).
 
-```
-filename mc url "https://raw.githubusercontent.com/sasjs/fileuploader/master/runme.sas";
+```sas
+%let apploc=/Public/app/fileuploader;
+filename mc url "https://raw.githubusercontent.com/sasjs/fileuploader/master/stream.sas";
 %inc mc;
 ```
 
-You can now open it at `YOURSERVER/SASJobExecution?_program=/Public/app/fileuploader/clickme`.
+You can now open it at `YOURSERVER/SASJobExecution?_program=/Public/app/fileuploader/services/clickme`.
 
 ## Alternatives
 It is also possible to upload files using SAS Studio, into your home directory (you can set symlinks to other locations).
