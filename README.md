@@ -6,7 +6,7 @@ This is a vanilla JS demo app to show how to build a SAS-Powered file upload pro
 
 The file is sent to SAS where the path is verified, the file is written, and a directory listing is returned.
 
-If the file is greater than 5mb it is sent to SAS in chunks, with a progress bar displayed.
+If the file is greater than 5mb it is sent to SAS in chunks, with a progress bar displayed.  A video demonstrating this process is available here:  https://www.youtube.com/watch?v=rf9myXovrsk
 
 ![screenshot of sasjs file uploader](https://i.imgur.com/alHXcTK.png)
 
@@ -24,6 +24,7 @@ filename mc url "https://raw.githubusercontent.com/sasjs/fileuploader/master/str
 ```
 
 The link to open the app will be shown in the log.
+
 
 ## Alternatives
 It is also possible to upload files using SAS Studio, into your home directory (you can set symlinks to other locations).
