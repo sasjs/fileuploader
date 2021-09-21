@@ -69,15 +69,12 @@ async function upload() {
   const fileUploadStatus = document.getElementById('fileUploadStatus')
   fileUploadStatus.innerText = '0%'
   progressBar.style.height = '30px'
-  let completed = true
   const file = x.files[0]
   if (file) {
     const numberOfChunks = Math.ceil(file.size / chunkSize)
 
     for (let i = 0; i < numberOfChunks; i++) {
       if (cancelled === true) {
-        completed = false
-        alert('Upload cancelled')
         break
       }
       const chunkStart = chunkSize * i
@@ -104,11 +101,13 @@ async function upload() {
                 displayError(new Error(error))
               }
               if (typeof res?.dirlist === 'object') {
-                fileUploadStatus.innerText = `Uploaded: ${bytesToSize(
-                  chunkEnd
-                )} (${status})`
-                barStatus.style.width = status
-                populateTable(res.dirlist)
+                if (!cancelled) {
+                  fileUploadStatus.innerText = `Uploaded: ${bytesToSize(
+                    chunkEnd
+                  )} (${status})`
+                  barStatus.style.width = status
+                  populateTable(res.dirlist)
+                }
               } else {
                 displayError(new Error('Response does not contain dir list'))
               }
@@ -139,13 +138,16 @@ async function upload() {
           )
       }
     }
-    setTimeout(function () {
-      if (completed) {
-        alert('Successfully Uploaded')
-      }
-      resetPage()
-    }, 10)
+    requestFinished()
   }
+}
+
+function requestFinished() {
+  const cancelButton = document.getElementById('cancel')
+  cancelButton.innerText = 'Reset'
+  cancelButton.removeEventListener('click', cancel)
+  cancelButton.addEventListener('click', resetPage)
+  cancelButton.disabled = false
 }
 
 function cancel() {
@@ -156,39 +158,37 @@ function cancel() {
 }
 
 function resetPage() {
+  const cancelButton = document.getElementById('cancel')
+  cancelButton.disabled = true
+  cancelButton.removeEventListener('click', resetPage)
+  cancelButton.addEventListener('click', cancel)
+  cancelButton.innerText = 'Cancel'
   document.getElementById('upload').disabled = true
-  document.getElementById('cancel').disabled = true
   document.getElementById('filestatus').innerHTML = 'Select file to upload.'
+  document.getElementById('filePath').value = ''
   document.getElementById('myfile').value = ''
   document.getElementById('progressBar').style.height = '0px'
   document.getElementById('barStatus').style.width = '0%'
   document.getElementById('fileUploadStatus').innerText = ''
   document.getElementById('dirlist').style.display = 'none'
   document.getElementById('horizontalLine').style.display = 'none'
+  document.getElementById('logTitle').style.display = 'none'
+  document.getElementById('log').style.display = 'none'
   cancelled = false
 }
 
 function displayError(err) {
-  alert('Error Occurred')
-  resetPage()
+  requestFinished()
   const requests = sasjs.getSasRequests()
   if (requests.length > 0 && requests[0].logFile) {
     const logFile = requests[0].logFile.replace(/\n*$/, '')
     document.getElementById('horizontalLine').style.display = 'block'
-    document.getElementById('clearLog').style.display = 'inline-block'
     document.getElementById('logTitle').style.display = 'inline-block'
     const log = document.getElementById('log')
     log.innerHTML = logFile
     log.style.display = 'block'
   }
   throw err
-}
-
-function clearLog() {
-  document.getElementById('horizontalLine').style.display = 'none'
-  document.getElementById('logTitle').style.display = 'none'
-  document.getElementById('log').style.display = 'none'
-  document.getElementById('clearLog').style.display = 'none'
 }
 
 function fileChange() {
