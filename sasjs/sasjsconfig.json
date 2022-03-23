@@ -9,7 +9,7 @@
     ]
   },
   "streamConfig": {
-    "assetPaths": [],
+    "streamLogo": "logo.png",
     "streamWeb": true,
     "streamWebFolder": "web",
     "webSourcePath": "src"
@@ -43,6 +43,12 @@
           "sasjs/utils/copysas9.sh"
         ]
       }
+    },
+    {
+      "name": "server",
+      "serverType": "SASJS",
+      "serverUrl": "",
+      "appLoc": "/Public/app/fileuploader"
     }
   ]
 }
