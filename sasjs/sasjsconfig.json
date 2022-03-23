@@ -10,6 +10,7 @@
   },
   "streamConfig": {
     "streamLogo": "logo.png",
+    "streamServiceName": "FileUploader",
     "streamWeb": true,
     "streamWebFolder": "web",
     "webSourcePath": "src"
