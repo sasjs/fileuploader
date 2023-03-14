@@ -17,8 +17,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sasjs/adapter": "^3.8.0",
-    "@sasjs/core": "^4.18.3"
+    "@sasjs/adapter": "4.1.6",
+    "@sasjs/core": "4.45.11"
   },
   "devDependencies": {
     "@types/tough-cookie": "^4.0.1",

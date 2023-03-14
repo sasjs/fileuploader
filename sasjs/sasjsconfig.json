@@ -19,12 +19,12 @@
   "targets": [
     {
       "name": "viya",
-      "serverUrl": "https://sas.analytium.co.uk",
+      "serverUrl": "https://sasviya.com",
       "serverType": "SASVIYA",
-      "allowInsecureRequests": false,
+      "httpsAgentOptions": {
+        "allowInsecureRequests": false
+      },
       "appLoc": "/Public/app/fileuploader",
-      "macroFolders": [],
-      "programFolders": [],
       "deployConfig": {
         "deployServicePack": true,
         "deployScripts": [
