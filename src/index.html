@@ -3,35 +3,28 @@
   <head>
     <meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge" />
     <link
-      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      href="roboto/roboto.css"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="switch.css" />
     <link rel="stylesheet" href="table.css" />
-    <script>
-      function initSasJs() {
-        sasjs = new SASjs.default({
-          appLoc: '/Public/app/fileuploader',
-          serverType: 'SASVIYA',
-          debug: false,
-          useComputeApi: true,
-          loginMechanism: 'Redirected',
-        })
-        sasjs.checkSession().then((res) => {
-          if (res.isLoggedIn) afterLogin()
-        })
-      }
-    </script>
     <script src="sasjs.js"></script>
-    <script src="scripts.js"></script>
   </head>
-  <body onload="initSasJs()">
+  <body>
+    <sasjs
+      appLoc="/Public/app/fileuploader"
+      serverType="SASVIYA"
+      debug="false"
+      useComputeApi="true"
+      loginMechanism="Redirected"
+    ></sasjs>
+
     <div class="debug">
       <span>Debug</span>
 
       <label class="switch">
-        <input id="debug" type="checkbox" onchange="setDebugState()" />
+        <input id="debug" type="checkbox"/>
         <span class="slider"></span>
       </label>
     </div>
@@ -44,11 +37,11 @@
       <input type="text" id="username" placeholder="Enter username" />
       <input type="password" id="password" placeholder="Enter password" />
     </div>
-    <button id="login" onclick="login()">Log in</button>
+    <button id="login">Log in</button>
 
-    <div class="form" id="upload-form" style="display: none">
+    <div class="form display-none" id="upload-form">
       <input type="text" id="filePath" placeholder="Where to upload" />
-      <input type="file" id="myfile" name="myfile" onchange="fileChange()" />
+      <input type="file" id="myfile" name="myfile"/>
       <p id="filestatus"></p>
       <div id="progressBar">
         <div id="barStatus"></div>
@@ -58,23 +51,21 @@
     <div>
       <button
         id="upload"
-        onclick="upload()"
         disabled="disabled"
-        style="display: none"
+        class="display-none"
       >
         Upload
       </button>
       <button
         id="cancel"
-        onclick="cancel()"
         disabled="disabled"
-        style="display: none"
+        class="display-none"
       >
         Cancel
       </button>
     </div>
     <div>
-      <table id="dirlist" style="display: none">
+      <table id="dirlist" class="display-none">
         <tr>
           <th>FILEPATH</th>
         </tr>
@@ -83,8 +74,10 @@
         </tr>
       </table>
     </div>
-    <hr id="horizontalLine" style="display: none" />
-    <h1 id="logTitle" style="display: none">Logs</h1>
-    <div id="log" style="display: none"></div>
+    <hr id="horizontalLine" class="display-none"/>
+    <h1 id="logTitle" class="display-none">Logs</h1>
+    <div id="log" class="display-none"></div>
+
+    <script src="scripts.js"></script>
   </body>
 </html>

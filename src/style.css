@@ -94,6 +94,10 @@ select {
   vertical-align: -webkit-baseline-middle;
 }
 
+.display-none {
+  display: none;
+}
+
 #progressBar {
   position: relative;
   width: 100%;
