@@ -1,6 +1,31 @@
 let sasjs
 let cancelled = false
 
+function initSasJs() {
+  const sasElement = document.querySelector('sasjs')
+  const useComputeApi = sasElement?.getAttribute('useComputeApi')
+
+  const sasjsConfig = {
+    serverUrl: sasElement?.getAttribute('serverUrl') ?? undefined,
+    appLoc: sasElement?.getAttribute('appLoc') ?? '',
+    serverType: sasElement?.getAttribute('serverType'),
+    debug: sasElement?.getAttribute('debug') === 'true',
+    loginMechanism: sasElement?.getAttribute('loginMechanism') ?? 'Default',
+    useComputeApi:
+      useComputeApi === 'true'
+        ? true
+        : useComputeApi === 'false'
+        ? false
+        : useComputeApi,
+    contextName: sasElement?.getAttribute('contextName') ?? ''
+  }
+
+  sasjs = new SASjs.default(sasjsConfig)
+  sasjs.checkSession().then((res) => {
+    if (res.isLoggedIn) afterLogin()
+  })
+}
+
 function login(resolve, reject) {
   const username = document.getElementById('username').value
   const password = document.getElementById('password').value
@@ -27,7 +52,7 @@ function afterLogin() {
   uploadForm.style.display = 'flex'
   uploadButton.style.display = 'inline-block'
   cancelButton.style.display = 'inline-block'
-}
+} 
 
 function showLogin() {
   const loginForm = document.getElementById('login-form')
@@ -265,3 +290,11 @@ function bytesToSize(
 
   return (bytes / Math.pow(k, i)).toFixed(dm) + ' ' + sizes[i]
 }
+
+document.querySelector("#login").addEventListener("click", login);
+document.querySelector("#upload").addEventListener("click", upload);
+document.querySelector("#cancel").addEventListener("click", cancel);
+document.querySelector("#debug").addEventListener("change", setDebugState);
+document.querySelector("#myfile").addEventListener("change", fileChange);
+
+initSasJs()
